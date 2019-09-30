@@ -39,7 +39,13 @@ sudo systemctl restart mysql
 bash -c /home/pi/mypkgs/install_part1.sh
 
 #FIX ISSUE WITH HTTPS REQUIRED
-bash -c /home/pi/mypkgs/install_part2.sh
+
+if sudo cat /etc/os-release | grep -q raspbian
+then
+ bash -c /home/pi/mypkgs/install_part2_arm.sh
+else
+ bash -c /home/pi/mypkgs/install_part2.sh
+fi
 
 #RUN INSTALL FOR THE FOURTH AND FINAL TIME
 bash -c /home/pi/mypkgs/install_part1.sh
