@@ -9,8 +9,8 @@ sudo apt-get -y upgrade
 sudo apt-get install -y wget unzip
 
 #Get Required Files from Github
-#wget https://github.com/johnnyruz/kegbot-server/raw/add_my_pkgs_to_github/my_kegbot_packages.zip
-#unzip my_kegbot_packages.zip
+wget https://github.com/johnnyruz/kegbot-server/raw/add_my_pkgs_to_github/my_kegbot_packages.zip
+unzip /home/pi/my_kegbot_packages.zip
 
 #DEBUG ONLY - REMOVE FILES FROM PIP INSTALLATION DIRECTORY
 sudo rm -rf /usr/local/lib/python2.7/dist-packages/*
