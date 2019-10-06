@@ -44,7 +44,12 @@ if sudo cat /etc/os-release | grep -q raspbian
 then
  bash -c /home/pi/mypkgs/install_part2_arm.sh
 else
- bash -c /home/pi/mypkgs/install_part2.sh
+ if dpkg --print-architecture | grep -q i386
+ then
+    bash -c /home/pi/mypkgs/install_part2_i386.sh
+ else
+    bash -c /home/pi/mypkgs/install_part2.sh
+ fi
 fi
 
 #RUN INSTALL FOR THE FOURTH AND FINAL TIME
