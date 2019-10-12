@@ -6,7 +6,7 @@ set +e
 #update system packages
 sudo apt-get -y update
 sudo apt-get -y upgrade
-sudo apt-get install -y wget unzip
+sudo apt-get install -y wget unzip git
 
 #Get Required Files from Github
 wget https://github.com/johnnyruz/kegbot-server/raw/add_my_pkgs_to_github/my_kegbot_packages_latest.zip
