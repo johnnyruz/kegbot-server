@@ -14,7 +14,7 @@ DOCLINES = __doc__.split('\n')
 SHORT_DESCRIPTION = DOCLINES[0]
 LONG_DESCRIPTION = '\n'.join(DOCLINES[2:])
 DEPENDENCIES = [
-  'kegbot-pyutils == 0.1.7',
+  'kegbot-pyutils == 0.1.8',
   'kegbot-api == 1.1.0',
 
   'Django >= 1.7, < 1.8',
