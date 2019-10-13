@@ -172,6 +172,7 @@ img.taplist-foot-logos {
           pauseOnHover: false,
       });
   });
+
   var reloadDelay = 3000;
   var userAuth = false;
   function pageReload(){
@@ -186,6 +187,7 @@ img.taplist-foot-logos {
    *
   */
   var sock = io.connect('http://localhost:3000');
+
      
   setTimeout(function() {
     if(! sock.connected) {
@@ -207,6 +209,7 @@ img.taplist-foot-logos {
 		   p.previousReading = 0;
 		   p.lastMsgMillis = 0;
               p.flowId = null;
+
 		   pours[msg.beer_name] = p;
 		}
 	
@@ -217,11 +220,13 @@ img.taplist-foot-logos {
 	      pours[msg.beer_name].flowId = msg.flowId;
 		}
           else if(pours[msg.beer_name].flowId === msg.flowId && msg.beer_name != null) {
+
 		  document.getElementById(msg.beer_name).innerHTML="<center><font size='3'><b>Now Serving</b></font><br><br><font size='20'>"
 				+ (msg.reading - pours[msg.beer_name].firstReading).toFixed(1) + "</font> oz</center>";
 			  
 		  document.getElementById(msg.beer_name).style="color:white";
 		  pours[msg.beer_name].previousReading = msg.reading;
+
 		}
 	}
 	else if (msg.msg_type === "UserAuth"){
