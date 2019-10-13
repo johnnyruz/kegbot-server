@@ -177,7 +177,15 @@ img.taplist-foot-logos {
   function pageReload(){
 	location.reload(true);	  
     }
-  var sock = io.connect('http://[YOUR KEGBOT SERVER IP OR HOSTNAME]:[YOUR NODE SERVER PORT]');
+	
+  /*
+   *  FOR EXTERNAL ACCESS TO LIVE POUR DATA:
+   *
+   *  CHANGE: "localhost" to your Kegbot Sever IP Address/Hostname
+   *  CHANGE: "3000" to the Node Server Port
+   *
+  */
+  var sock = io.connect('http://localhost:3000');
      
   setTimeout(function() {
     if(! sock.connected) {
