@@ -44,17 +44,36 @@ setInterval(refreshUsers, config.REFRESH_USER_DELAY);
 
 //start server
 http.listen(config.PORT, function(){
-    console.log('listening on *:' + config.PORT);
+    console.log(new Date().toLocaleString() + ' - listening on *:' + config.PORT);
 });
 
+
+try {
 
 //configure action when redis publish is received
 client1.on('message', function(chan, msg) {
     var msgJSON = JSON.parse(msg);
-    
-    if(msgJSON.event === "MeterUpdate"){
 
-       logger.info(msgJSON);       
+    if(msgJSON.event === "UserAuthenticatedEvent"){
+
+       var userAuthMsg = new Object();
+       userAuthMsg.msg_type = "UserAuth";
+       userAuthMsg.assigned = false;
+
+       userlist.forEach((user) => {
+           if (user.username === msgJSON.data.username){
+              userAuthMsg.assigned = true;
+              userAuthMsg.name = user.display_name;
+           }
+       });
+
+       logger.info(userAuthMsg);
+       io.sockets.emit('twits', userAuthMsg);
+
+    }
+    else if(msgJSON.event === "WebFlowUpdate"){
+
+       logger.info(msgJSON);
 
        var flowUpdateMsg = new Object();
 
@@ -62,35 +81,25 @@ client1.on('message', function(chan, msg) {
 
             if (tap.meter_name === msgJSON.data.meter_name){
                flowUpdateMsg.beer_name = tap.beer_name;
-               flowUpdateMsg.reading = ((msgJSON.data.reading * tap.ml_per_tick) * 0.033814).toFixed(1);
-               //flowUpdateMsg.ticks = msgJSON.data.reading;
-               //flowUpdateMsg.ml_per_tick = tap.ml_per_tick;
+               flowUpdateMsg.reading = ((msgJSON.data.ticks * tap.ml_per_tick) * 0.033814).toFixed(1);
+	       flowUpdateMsg.status = msgJSON.data.state;
+               flowUpdateMsg.flowId = msgJSON.data.flow_id;
+	       flowUpdateMsg.username = msgJSON.data.username;
             }
 
        });
 
-       flowUpdateMsg.msg_type = "Flow";
+       flowUpdateMsg.msg_type = "FlowUpdate";
        logger.info(flowUpdateMsg);
        io.sockets.emit('twits', flowUpdateMsg);
     }
-    else if(msgJSON.event === "UserAuthenticatedEvent"){
-
-       var userAuthMsg = new Object();
-
-       userlist.forEach((user) => {
-
-           if (user.username === msgJSON.data.username){
-              userAuthMsg.name = user.display_name;
-           }
-       });
-
-       userAuthMsg.msg_type = "UserAuth";
-       logger.info(userAuthMsg);
-       io.sockets.emit('twits', userAuthMsg);
-    }
-
-
 });
+
+} catch (err){
+        console.log(newDate().toLocaleString() + ' - Error in ClientON');
+	console.log(newDate().toLocaleString() + ' - ' + err);
+
+}
 
 //subscribe to kegnet redis channel
 client1.subscribe('kegnet');
@@ -98,12 +107,12 @@ client1.subscribe('kegnet');
 //timer function to refresh taps
 function refreshTaps() {
    
-   //logger.info('Refreshing Tap Data');   
+   try{
 
    taplist = [];
 
    request('http://localhost/api/taps', function (error, response, body) {
-
+      
       var bodyjson = JSON.parse(body);
 
       bodyjson.objects.forEach((tap) => {
@@ -120,13 +129,23 @@ function refreshTaps() {
       taplist.push(t);
    });
 
-   //console.log(taplist);
+						  
 
    });
+
+   } catch (err) {
+
+	console.log(newDate().toLocaleString() + ' - Error Refreshing Taps');
+	console.log(newDate().toLocaleString() + ' - ' + err);
+
+   }
+
 }
 
 //timer function to refresh users
 function refreshUsers() {
+
+   try {
 
    userlist = [];
 
@@ -154,4 +173,11 @@ function refreshUsers() {
       });
 
    });
+
+   } catch (err){
+
+	console.log(new Date().toLocaleString() + ' - Error Refreshing Users');
+	console.log(new Date().toLocaleString() + ' - ' + err);
+
+   }
 }

@@ -10,14 +10,12 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
 <style>
-
 body {
 	background-color: #000;
 	background-image: url('{{ STATIC_URL }}images/chalkboard-bg.jpg') center center no-repeat;
   background-size: cover;
   color: #eee;
 }
-
 .establishment-logo {
 	position:fixed;
 	bottom:0;
@@ -30,7 +28,6 @@ body {
 	color:#ffffff;
 	font-size:48px;
 }
-
 .kegbot-logo {
 	position:fixed;
 	bottom:0;
@@ -42,7 +39,6 @@ body {
 	margin-right:15px;
 	margin-bottom:15px;
 }
-
 #footer {
    position:fixed;
    left:0;
@@ -52,14 +48,11 @@ body {
    font-size:20px;
    text-align:center;
 }
-
 img.taplist-foot-logos {
 	height:100%;
 	min-height:100%;
 	max-height:100%;
 }
-
-
 </style>
 {% endblock %}
 
@@ -168,7 +161,6 @@ img.taplist-foot-logos {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
 
 <script type="text/javascript">
-
   // Activate carousel.
   $(document).ready(function(){
       $('.tap-carousel').slick({
@@ -183,12 +175,19 @@ img.taplist-foot-logos {
 
   var reloadDelay = 3000;
   var userAuth = false;
-
   function pageReload(){
 	location.reload(true);	  
     }
+	
+  /*
+   *  FOR EXTERNAL ACCESS TO LIVE POUR DATA:
+   *
+   *  CHANGE: "localhost" to your Kegbot Sever IP Address/Hostname
+   *  CHANGE: "3000" to the Node Server Port
+   *
+  */
+  var sock = io.connect('http://localhost:3000');
 
-  var sock = io.connect('http://[YOUR KEGBOT SERVER IP OR HOSTNAME]:[YOUR NODE SERVER PORT]');
      
   setTimeout(function() {
     if(! sock.connected) {
@@ -199,14 +198,12 @@ img.taplist-foot-logos {
   }, 5000);
   
   var pours = {};
-
   sock.on('twits', function(msg) {
     console.log(msg);
 	
       if (msg.msg_type === "FlowUpdate" && msg.status === "active" && msg.beer_name != null){
 	
 		if (pours[msg.beer_name] == null){
-
 		   var p = new Object();
 		   p.firstReading = 0;
 		   p.previousReading = 0;
@@ -214,7 +211,6 @@ img.taplist-foot-logos {
               p.flowId = null;
 
 		   pours[msg.beer_name] = p;
-
 		}
 	
           if (pours[msg.beer_name].flowId == null){
@@ -229,7 +225,6 @@ img.taplist-foot-logos {
 				+ (msg.reading - pours[msg.beer_name].firstReading).toFixed(1) + "</font> oz</center>";
 			  
 		  document.getElementById(msg.beer_name).style="color:white";
-
 		  pours[msg.beer_name].previousReading = msg.reading;
 
 		}
