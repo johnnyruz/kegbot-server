@@ -34,18 +34,5 @@ else
  bash -c /home/pi/mypkgs/install_part2.sh
 fi
 
-#RUN INSTALL FOR THE FOURTH AND FINAL TIME
+#RUN INSTALL FOR THE THIRD AND FINAL TIME
 bash -c /home/pi/mypkgs/install_part1.sh
-
-
-#INSTALL NODE SERVER
-curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-sudo apt-get install -y nodejs
-
-cd ~
-git clone --branch latest https://github.com/johnnyruz/kegbot-server.git
-sudo cp -rf ~/kegbot-server/node_server /home/kegbot/kegbot-server.venv/
-sudo cp -rf ~/kegbot-server/node_server/kegbot.conf /etc/supervisor/conf.d/kegbot.conf
-sudo rm -rf ~/kegbot-server
-sudo supervisorctl restart kegbot:*
-
