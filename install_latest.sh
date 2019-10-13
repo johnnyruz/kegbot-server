@@ -36,3 +36,7 @@ fi
 
 #RUN INSTALL FOR THE THIRD AND FINAL TIME
 bash -c /home/pi/mypkgs/install_part1.sh
+
+#FIX POSSIBLE ISSUE WITH PYCORE-FLAGS
+sudo sed -i 's/-e //' /home/kegbot/.kegbot/pycore-flags.txt
+
