@@ -1,8 +1,12 @@
 #!/bin/bash
 
-URL=$1
-KEY=$2
-[ $# -ne 2 ] && { echo "Usage: $0 ip_or_hostname api_key"; exit 1; }
+echo Enter IP Address or Hostname of your Server:
+read URL
+
+echo
+echo Enter Kegbot API Key:
+read KEY
+
 
 #INSTALL NODE SERVER
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
