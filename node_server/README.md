@@ -33,9 +33,9 @@ to help get you started.
 * Edit the **config.js** file with the desired port and refresh time. Must be a different port than Kegbot Server.
 * Make sure you have the latest version of **fullscreen.html** in 
 ```
-/home/kegbot/kegbot-server.venv/lib/python2.7/site-packages/pykeg/web/kegweb/templates/kegweb/templates/kegweb/
+/home/kegbot/kegbot-server.venv/lib/python2.7/site-packages/pykeg/web/kegweb/templates/kegweb/
 ```
-* Update line 204 in **fullscreen.html** with the ip address and port number of your node js server.
+* In **fullscreen.html**, update `var sock = io.connect('http://localhost:3000');` with the IP Address of your Kegbot Server
 * Navigate to the folder
 ```
 /home/kegbot/kegbot-server.venv/node-server
