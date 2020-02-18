@@ -23,7 +23,7 @@ sudo cp /home/pi/mypkgs/NEW-50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cn
 sudo systemctl restart mysql
 
 #RUN INSTALL FOR SECOND TIME
-bash -c /home/pi/mypkgs/install_part1.sh
+kegberry install
 
 #FIX ISSUE WITH HTTPS REQUIRED
 
@@ -35,7 +35,7 @@ else
 fi
 
 #RUN INSTALL FOR THE THIRD AND FINAL TIME
-bash -c /home/pi/mypkgs/install_part1.sh
+kegberry install
 
 #FIX POSSIBLE ISSUE WITH PYCORE-FLAGS
 sudo sed -i 's/-e //' /home/kegbot/.kegbot/pycore-flags.txt
