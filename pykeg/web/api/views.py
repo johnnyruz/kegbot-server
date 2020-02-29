@@ -320,6 +320,10 @@ def get_keg_sizes(request):
         })
         fake_id += 1
     return ret
+	
+def get_site_units(request):
+	return {'volume_units': models.KegbotSite.get().volume_display_units,
+				'temperature_units': models.KegbotSite.get().temperature_display_units}
 
 
 @require_http_methods(["POST"])
