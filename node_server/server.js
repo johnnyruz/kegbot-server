@@ -12,6 +12,9 @@ var client1 = redis.createClient(url);
 
 var io = require('socket.io')(http)
 
+var volumeUnits = 'imperial';
+var tempUnits = 'f';
+var conversionValue = 0.033814;
 var taplist = [];
 var userlist = [];
 
@@ -36,10 +39,12 @@ const logger = createLogger({
 app.use('/', express.static('www'));
 
 //update information regarding taps
+refreshUnits();
 refreshTaps();
 refreshUsers();
 
 setInterval(refreshTaps, config.REFRESH_TAP_DELAY);
+setInterval(refreshUnits, config.REFRESH_UNIT_DELAY);
 setInterval(refreshUsers, config.REFRESH_USER_DELAY);
 
 //start server
@@ -81,10 +86,11 @@ client1.on('message', function(chan, msg) {
 
             if (tap.meter_name === msgJSON.data.meter_name){
                flowUpdateMsg.beer_name = tap.beer_name;
-               flowUpdateMsg.reading = ((msgJSON.data.ticks * tap.ml_per_tick) * 0.033814).toFixed(1);
-	       flowUpdateMsg.status = msgJSON.data.state;
+               flowUpdateMsg.reading = ((msgJSON.data.ticks * tap.ml_per_tick) * conversionValue).toFixed(1);
+	           flowUpdateMsg.status = msgJSON.data.state;
                flowUpdateMsg.flowId = msgJSON.data.flow_id;
-	       flowUpdateMsg.username = msgJSON.data.username;
+	           flowUpdateMsg.username = msgJSON.data.username;
+			   flowUpdateMsg.units = volume_units;
             }
 
        });
@@ -103,6 +109,29 @@ client1.on('message', function(chan, msg) {
 
 //subscribe to kegnet redis channel
 client1.subscribe('kegnet');
+
+//timer function to refresh site units
+function refreshUnits() {
+
+   logger.info('Refreshing Unit Data');
+
+   request('http://localhost/api/units', function (error, response, body) {
+
+      var bodyjson = JSON.parse(body);
+
+      if(bodyjson.object.volume_units != null){
+         volume_units = bodyjson.object.volume_units;
+         conversionValue = volume_units == 'imperial' ? 0.033814 : 1.000000;
+         console.log('Volume Set to: ' + volume_units);
+      }
+
+      if(bodyjson.object.temperature_units != null){
+         temperature_units = bodyjson.object.temperature_units;
+         console.log('Temperature Set to: ' + temperature_units);
+      }
+   });
+
+}
 
 //timer function to refresh taps
 function refreshTaps() {

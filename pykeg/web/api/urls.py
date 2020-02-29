@@ -25,6 +25,7 @@ urlpatterns = patterns('pykeg.web.api.views',
 
     url(r'^status/?$', 'get_status'),
     url(r'^version/?$', 'get_version'),
+	url(r'^units/?$', 'get_site_units'),
 
     ### API authorization
 

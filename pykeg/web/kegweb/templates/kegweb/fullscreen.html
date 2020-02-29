@@ -203,6 +203,8 @@ img.taplist-foot-logos {
 	
       if (msg.msg_type === "FlowUpdate" && msg.status === "active" && msg.beer_name != null){
 	
+		var unit = msg.units == 'imperial' ? 'oz' : 'mL';
+	
 		if (pours[msg.beer_name] == null){
 		   var p = new Object();
 		   p.firstReading = 0;
@@ -222,7 +224,7 @@ img.taplist-foot-logos {
           else if(pours[msg.beer_name].flowId === msg.flowId && msg.beer_name != null) {
 
 		  document.getElementById(msg.beer_name).innerHTML="<center><font size='3'><b>Now Serving</b></font><br><br><font size='20'>"
-				+ (msg.reading - pours[msg.beer_name].firstReading).toFixed(1) + "</font> oz</center>";
+				+ (msg.reading - pours[msg.beer_name].firstReading).toFixed(1) + "</font> " + unit + "</center>";
 			  
 		  document.getElementById(msg.beer_name).style="color:white";
 		  pours[msg.beer_name].previousReading = msg.reading;
