@@ -18,6 +18,7 @@ DEPENDENCIES = [
   'kegbot-api == 1.1.0',
   'mock == 2.0.0',
   'Django >= 1.7, < 1.8',
+  'django-appconf == 1.0.2',
   'django-imagekit == 3.1',
   'django-registration == 1.0',
   'django-socialregistration == 0.5.10',
