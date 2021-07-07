@@ -115,8 +115,17 @@ client1.subscribe('kegnet');
 function refreshUnits() {
 
    logger.info('Refreshing Unit Data');
+   
+    const unitsrequest = {  
+    url: 'http://localhost/api/units',
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+        'X-Kegbot-Api-Key': config.API_KEY
+    }
+   };
 
-   request('http://localhost/api/units', function (error, response, body) {
+   request(unitsrequest, function (error, response, body) {
 
       var bodyjson = JSON.parse(body);
 
@@ -141,7 +150,16 @@ function refreshTaps() {
 
    taplist = [];
 
-   request('http://localhost/api/taps', function (error, response, body) {
+   const tapsrequest = {  
+    url: 'http://localhost/api/taps',
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+        'X-Kegbot-Api-Key': config.API_KEY
+    }
+   };
+
+   request(tapsrequest, function (error, response, body) {
       
       var bodyjson = JSON.parse(body);
 
