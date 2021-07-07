@@ -159,7 +159,7 @@ function refreshTaps() {
     }
    };
 
-   request(options, function (error, response, body) {
+   request(tapsrequest, function (error, response, body) {
       
       var bodyjson = JSON.parse(body);
 
